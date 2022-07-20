@@ -1,8 +1,8 @@
 
 #include <EloquentTinyML.h>
-#include "digits_model.h"
+#include "prey_car.h"
 #define NUMBER_OF_INPUTS 150
-#define NUMBER_OF_OUTPUTS 2
+#define NUMBER_OF_OUTPUTS 4
 #define TENSOR_ARENA_SIZE 8*1024
 
 Eloquent::TinyML::TfLite<
@@ -24,7 +24,7 @@ Adafruit_VC0706 cam = Adafruit_VC0706(&cameraconnection);
 File myFile;
 uint32_t time1w;
 uint32_t code_start;
-float y_pred[2];
+float y_pred[4];
 int y_test = 8;
 
 void initBuff(char* buff) {
@@ -47,7 +47,7 @@ void setup() {
     return;
   }  
   
-  ml.begin(digits_model);                 
+  ml.begin(prey_car);                 
   time1w = micros() - code_start;
 }
 
@@ -139,7 +139,7 @@ void loop() {
   int window_x = mcuHeight;
   int window_y = mcuWidth;
   float compressed_image[height_mcu * width_mcu];
-  float orig_image[30][40];
+  //float orig_image[30][40];
   
   int height_window = int(image_height/window_x);
   int width_window = int(image_width/window_y);
@@ -273,7 +273,7 @@ void loop() {
   
   Serial.print("Test output is: ");
   Serial.print("Predicted proba are: ");
-  for (int i = 0; i < 2; i++) {
+  for (int i = 0; i < 4; i++) {
       Serial.print(y_pred[i]);
       Serial.print(i == 9 ? '\n' : ',');
   }
